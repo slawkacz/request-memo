@@ -5,8 +5,25 @@ var Request = (function() {
             return key + '=' + obj[key];
         }).join('&');
     };
+    var hashOfString = function hashOfString(str) {
+        if (Array.prototype.reduce) {
+            return str.split("").reduce(function(a, b) {
+                a = ((a << 5) - a) + b.charCodeAt(0);
+                return a & a
+            }, 0);
+        }
+        var hash = 0;
+        if (str.length === 0) return hash;
+        for (var i = 0; i < str.length; i++) {
+            var character = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + character;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    }
     var getRequestKey = function getRequestKey(params, url) {
-        return JSON.stringify(params) + url;
+    	var str = JSON.stringify(params) + url;
+        return hashOfString(str);
     }
     var fetchData = function fetchData(params, url) {
         var requestKey = getRequestKey(params, url);
