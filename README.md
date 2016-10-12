@@ -1,2 +1,2 @@
 # request-memo
-Promise based request memorize system.
+Promise based request memoization system.
